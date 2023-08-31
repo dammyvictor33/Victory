@@ -1,1 +1,35 @@
-const Multicoin = require('Multicoin'); describe('Multicoin', () => { let multicoin; beforeEach(() => { multicoin = new Multicoin(['BTC', 'BCH']); }); afterEach(() => { multicoin = null; }); test('should send a payment successfully', () => { // Get the current order total const orderTotal = 1234; // Create a Multicoin transaction object const transaction = new Multicoin.Transaction(orderTotal); // Mock the required methods transaction.setRecipient = jest.fn(); transaction.setSender = jest.fn(); transaction.setTxId = jest.fn(); // Add the recipient's wallet address and amount to the transaction transaction.setRecipient('BCH-BC-12345', '1.00'); expect(transaction.setRecipient).toHaveBeenCalledWith('BCH-BC-12345', '1.00'); // Add the recipient's Bitcoin wallet address and amount to the transaction transaction.setRecipient('BTC-BC-54321', '0.01'); expect(transaction.setRecipient).toHaveBeenCalledWith('BTC-BC-54321', '0.01'); // Set the Multicoin wallet address transaction.setSender('Multicoin'); expect(transaction.setSender).toHaveBeenCalledWith('Multicoin'); // Set the transaction ID transaction.setTxId('12345'); expect(transaction.setTxId).toHaveBeenCalledWith('12345'); // Mock the sendPayment method multicoin.sendPayment = jest.fn(); // Send the transaction multicoin.sendPayment(transaction); expect(multicoin.sendPayment).toHaveBeenCalledWith(transaction); }); test('should get transaction ID successfully', () => { const mockTxId = 'mockTx123'; const transaction = { /* mock transaction data */ }; // Mock the getTransactionId method multicoin.getTransactionId = jest.fn(() => mockTxId); // Get the transaction ID from the Multicoin API const txid = multicoin.getTransactionId(transaction); expect(multicoin.getTransactionId).toHaveBeenCalledWith(transaction); expect(txid).toEqual(mockTxId); }); test('should get transaction info successfully', () => { const mockTransactionInfo = { /* mock transaction info data */ }; const txid = 'mockTx123'; // Mock the getTransactionInfo method multicoin.getTransactionInfo = jest.fn(() => mockTransactionInfo); // Get the transaction details from the Multicoin API const transactionInfo = multicoin.getTransactionInfo(txid); expect(multicoin.getTransactionInfo).toHaveBeenCalledWith(txid); expect(transactionInfo).toEqual(mockTransactionInfo); }); });
+```php
+<?php
+require_once('vendor/autoload.php'); 
+
+$multicoin = new Multicoin(['BTC', 'BCH']); 
+
+// Get the current order total
+$order_total = 1234; 
+
+// Create a Multicoin transaction object
+$transaction = new Multicoin\Transaction[$order_total]; 
+
+// Add the recipient's wallet address and amount to the transaction
+$transaction->setRecipient('BCH-BC-12345','1.00'); 
+
+// Add the recipient's Bitcoin wallet address and amount to the transaction
+$transaction->setRecipient('BTC-BC-54321','0.01'); 
+
+// Set the Multicoin wallet address
+$transaction->setSender('Multicoin');
+// Set the transaction ID
+$transaction->setTxId('12345'); 
+
+// Send the transaction
+$multicoin->sendPayment($transaction); 
+
+// Get the transaction ID from the Multicoin API
+$txid = $multicoin->getTransactionId($transaction); 
+
+// Get the transaction details from the Multicoin API
+$transaction_info = $multicoin->getTransactionInfo($txid); 
+
+// Print the transaction details to the screen
+print_r($transaction_info);
+```
